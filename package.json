@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "dependencies": {
+    "fontawesome": "^5.6.3",
+    "leaflet": "^1.9.2",
+    "leaflet-easybutton": "^2.4.0",
+    "readdir": "^1.0.2"
+  }
+}
