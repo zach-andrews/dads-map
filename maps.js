@@ -1,4 +1,4 @@
-var map = L.map('map',  {
+var map = L.map('map', {
     minZoom: 2.3,
     maxZoom: 19,
     attributionControl: false
@@ -79,14 +79,12 @@ function onEachFeature(feature, layer) {
         //     .setLatLng(e.latlng)
         //     .setContent(popupContent)
         //     .openOn(map);
-        fetch('http://127.0.0.1:3000/')
-        .then((response) => {
-            return response;
-        })
-        .then((myJson) => {
-            console.log(myJson);
-            console.log(myJson.body);
-        });
+        axios
+            .get('http://127.0.0.1:3000/')
+            .then(function (response) {
+                console.log(response);
+            });
+
         console.log(e["sourceTarget"]["feature"]["properties"]["ISO_A3"]);
 
     });
