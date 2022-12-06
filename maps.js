@@ -33,12 +33,13 @@ function style(feature) {
      };
 }
 
-L.easyButton('fa-home', function(btn, map){
+let homebutton = L.easyButton('fa-home', function(btn, map){
     document.documentElement.webkitRequestFullScreen();
     map.setView([20, 0], 2.3);
  }).addTo( map );
+ homebutton.button.style.width = '50px';
 
-L.easyButton('fa-star', function(btn, map){
+ let starbutton = L.easyButton('fa-star', function(btn, map){
     if (!toggle){
         fetch("./data/data.json")
         .then((res) => res.json())
@@ -54,39 +55,31 @@ L.easyButton('fa-star', function(btn, map){
     }
 
 }).addTo( map );
+starbutton.button.style.width = '50px';
+
+let updatebutton = L.easyButton('fa-refresh', function(btn, map){
+    document.documentElement.webkitRequestFullScreen();
+    map.setView([20, 0], 2.3);
+ }).setPosition('bottomleft').addTo( map );
+
 
 var popup = L.popup();
-
-// var photoImg = '<img src="https://static.pexels.com/photos/189349/pexels-photo-189349.jpeg" height="1500px" width="1500px"/>';
-var imgPathes = ["./data/visited/PER/index3.jpg", "./data/visited/PER/index2.jpg", "./data/visited/PER/index5.jpg", "./data/visited/PER/index4.jpg"];
-
-
-
-// some list bullshit i dont really know what this does.
-//
-// var popupContent = '<ul>'
-// imgPathes.forEach(path => popupContent += `<li><img src="${path}" height="150px" width="150px"/></li>`)
-// popupContent += '</ul>'
-
-
 function onEachFeature(feature, layer) {
     layer.on('click', function (e) {
 
-        // var popupContent = '<table><tbody>'
-        // imgPathes.forEach(path => popupContent += `<tr><td><img src="${path}" height="150px" width="150px"/></td></tr>`)
-        // popupContent += '</tbody></table>'
-        // popup
-        //     .setLatLng(e.latlng)
-        //     .setContent(popupContent)
-        //     .openOn(map);
         axios
-            .get('http://127.0.0.1:3000/')
-            .then(function (response) {
-                console.log(response);
-            });
-
-        console.log(e["sourceTarget"]["feature"]["properties"]["ISO_A3"]);
-
+        .get('http://10.0.0.39:3000/', { params: { countrycode: e["sourceTarget"]["feature"]["properties"]["ISO_A3"] } })
+        .then(function (response) {
+            console.log(response.data);
+            
+            var popupContent = '<table><tbody>'
+            response.data.forEach(path => popupContent += `<tr><td><img src="${path}" height="150px" width="150px"/></td></tr>`)
+            popupContent += '</tbody></table>'
+            popup
+                .setLatLng(e.latlng)
+                .setContent(popupContent)
+                .openOn(map);
+        });
     });
 
 }

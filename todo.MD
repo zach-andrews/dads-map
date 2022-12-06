@@ -1,4 +1,3 @@
 ## Todo 
-- Get pictures displaying
-- follow that github link from grehg to pull tiles from offline source
-- fix button imagies
+- format pictures that are displayed
+- replace the python update script with a node api endpoint
