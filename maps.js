@@ -45,6 +45,7 @@ let homebutton = L.easyButton('fa-home', function(btn, map){
         .then((res) => res.json())
         .then((data) => {
             layer = L.geoJson(data, {style: style, onEachFeature: onEachFeature}).addTo(map);
+            console.log(res.json)
         });
         toggle = true
     }
@@ -58,23 +59,27 @@ let homebutton = L.easyButton('fa-home', function(btn, map){
 starbutton.button.style.width = '50px';
 
 let updatebutton = L.easyButton('fa-refresh', function(btn, map){
-    document.documentElement.webkitRequestFullScreen();
-    map.setView([20, 0], 2.3);
+    axios
+    .get('http://localhost:3000/update')
  }).setPosition('bottomleft').addTo( map );
 
 
-var popup = L.popup();
+var popup = L.responsivePopup({className:"flex-container"});
 function onEachFeature(feature, layer) {
     layer.on('click', function (e) {
 
         axios
-        .get('http://10.0.0.39:3000/', { params: { countrycode: e["sourceTarget"]["feature"]["properties"]["ISO_A3"] } })
+        .get('http://localhost:3000/', { params: { countrycode: e["sourceTarget"]["feature"]["properties"]["ISO_A3"] } })
         .then(function (response) {
             console.log(response.data);
-            
-            var popupContent = '<table><tbody>'
-            response.data.forEach(path => popupContent += `<tr><td><img src="${path}" height="150px" width="150px"/></td></tr>`)
-            popupContent += '</tbody></table>'
+
+
+            // var popupContent = '<div class="flex-container">'
+            // response.data.forEach(path => popupContent += `<div><img src="${path}" height="150px" width="150px"/></div>`)
+            // popupContent += '</div>'
+            var popupContent = '<div>'
+            response.data.forEach(path => popupContent += `<img src="${path}" height="150px" width="150px"/>`)
+            popupContent += '</div>'
             popup
                 .setLatLng(e.latlng)
                 .setContent(popupContent)
