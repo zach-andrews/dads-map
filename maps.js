@@ -60,7 +60,7 @@ starbutton.button.style.width = '50px';
 
 let updatebutton = L.easyButton('fa-refresh', function(btn, map){
     axios
-    .get('http://localhost:3000/update')
+    .get('http://192.168.0.39:3000/update')
  }).setPosition('bottomleft').addTo( map );
 
 
@@ -69,7 +69,7 @@ function onEachFeature(feature, layer) {
     layer.on('click', function (e) {
 
         axios
-        .get('http://localhost:3000/', { params: { countrycode: e["sourceTarget"]["feature"]["properties"]["ISO_A3"] } })
+        .get('http://192.168.0.39:3000/', { params: { countrycode: e["sourceTarget"]["feature"]["properties"]["ISO_A3"] } })
         .then(function (response) {
             console.log(response.data);
 
@@ -78,7 +78,7 @@ function onEachFeature(feature, layer) {
             // response.data.forEach(path => popupContent += `<div><img src="${path}" height="150px" width="150px"/></div>`)
             // popupContent += '</div>'
             var popupContent = '<div>'
-            response.data.forEach(path => popupContent += `<img src="${path}" height="150px" width="150px"/>`)
+            response.data.forEach(path => popupContent += `<img src="${path}" height="330px" width="330px"/>`)
             popupContent += '</div>'
             popup
                 .setLatLng(e.latlng)
